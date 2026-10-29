@@ -6,9 +6,16 @@ if(!R||!document.getElementById('v3Generate'))return;
 const $=id=>document.getElementById(id);
 const fmt=new Intl.NumberFormat('vi-VN',{maximumFractionDigits:1});
 const intFmt=new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0});
-const state={terrain:null,trial:null,observations:[],summary:[]};
+const state={terrain:null,terrainCsv:null,terrainSynthetic:false,trial:null,observations:[],summary:[],isSynthetic:false};
 window.CoffeeFieldV3={
  get terrain(){return state.terrain;},
+ get trial(){return state.trial;},
+ get observations(){return state.observations.slice();},
+ get isSynthetic(){return state.isSynthetic;},
+ get snapshotProject(){return exportProject;},
+ restoreProject(data){return restoreProject(data)},
+ loadDemo(){return loadDemo()},
+ get yearSeries(){return state.summary.slice();},
  heightAt(x,z,sideM){
   const t=state.terrain;if(!t)return null;
   const m=Number(sideM)||100;
@@ -25,7 +32,7 @@ function download(name,content,type='text/csv;charset=utf-8'){
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function importTerrain(csv,isExample=false){
- const t=R.buildGrid(csv);state.terrain=t;
+ const t=R.buildGrid(csv);state.terrain=t;state.terrainCsv=csv;state.terrainSynthetic=!!isExample;
  $('v3TerrainStatus').textContent=isExample?'Dữ liệu mẫu tổng hợp':'Đã nạp CSV (trình duyệt)';
  $('v3TerrainGrid').textContent=t.xCount+' × '+t.zCount+' điểm';
  $('v3TerrainRelief').textContent=fmt.format(t.maxH-t.minH)+' m';
@@ -35,7 +42,7 @@ function importTerrain(csv,isExample=false){
  publishTerrain();
 }
 function resetTerrain(){
- state.terrain=null;$('v3TerrainFile').value='';
+ state.terrain=null;state.terrainCsv=null;state.terrainSynthetic=false;$('v3TerrainFile').value='';
  $('v3TerrainStatus').textContent='Chưa tải dữ liệu';
  for(const id of ['v3TerrainGrid','v3TerrainRelief','v3TerrainSlope'])$(id).textContent='—';
  message('v3TerrainMessage','Đã trở về địa hình mặt dốc giả định từ thông số V2.');
@@ -91,7 +98,7 @@ function renderTrial(t){
  }
 }
 function resetObservations(){
- state.observations=[];state.summary=[];
+ state.observations=[];state.summary=[];state.isSynthetic=false;window.dispatchEvent(new Event('coffeefield-data-change'));
  $('v3DataOutput').hidden=true;$('v3DataEmpty').hidden=false;$('v3ObservationFile').value='';
  message('v3DataMessage','Thiết kế lô đã thay đổi. Nhập lại CSV số liệu theo các mã lô hiện hành.');
 }
@@ -114,22 +121,81 @@ $('v3ExportTemplate').addEventListener('click',()=>{
  if(!state.trial){message('v3TrialMessage','Tạo thiết kế hợp lệ trước khi xuất.',true);return}
  download('coffeerow-harvest-observation-blank.csv',R.observationTemplate(state.trial));
 });
+function applyObservations(obs,synthetic=false){
+ const summary=R.summarizeObservations(obs);
+ state.observations=obs;state.summary=summary;state.isSynthetic=!!synthetic;
+ const table=$('v3DataRows');table.textContent='';
+ for(const entry of summary){
+  const row=make('tr');
+  for(const value of [entry.year,entry.treatment,entry.plots,fmt.format(entry.meanYieldKgHa),fmt.format(entry.minYieldKgHa),fmt.format(entry.maxYieldKgHa)])row.appendChild(make('td',null,value));
+  table.appendChild(row);
+ }
+ $('v3DataOutput').hidden=!obs.length;$('v3DataEmpty').hidden=!!obs.length;
+ $('v3ObservationsCount').textContent=obs.length+' bản ghi '+(synthetic?'VÍ DỤ TỔNG HỢP':'đo đạc')+' · '+summary.length+' nhóm năm/nghiệm thức';
+ message('v3DataMessage',synthetic?'Đang dùng số liệu TỔNG HỢP DEMO, KHÔNG PHẢI dữ liệu thực địa. Không sử dụng kết quả để kết luận khoa học.':'Đã tổng hợp dữ liệu đo theo kg nhân/ha. Chỉ là thống kê mô tả, chưa chứng minh khác biệt có ý nghĩa.');
+ window.dispatchEvent(new Event('coffeefield-data-change'));
+}
+function observationsCsv(){
+ if(!state.observations.length)return null;
+ const columns=['plot_id','year','harvest_kg','harvest_area_m2','irrigation_m3','labor_hours','notes'];
+ return R.csvEncode(columns,state.observations.map(r=>columns.map(k=>r[k]??'')));
+}
+function exportProject(){
+ return {format:'coffeerow-research-project',version:4,exported_at:new Date().toISOString(),
+  trial:{treatments:[...state.trial.treatments],blocks:state.trial.blocks,
+   plotWidthM:state.trial.plotWidthM,plotLengthM:state.trial.plotLengthM,seed:state.trial.seed},
+  terrain_csv:state.terrainCsv,terrain_synthetic:state.terrainSynthetic,
+  observations_csv:observationsCsv(),observations_synthetic:state.isSynthetic,
+  disclaimer:'Locally exported research session. Synthetic examples are not field data.'};
+}
+function restoreProject(data){
+ if(!data||typeof data!=='object'||data.format!=='coffeerow-research-project'||data.version!==4)throw Error('Không đúng định dạng CoffeeRow Lab V4');
+ if(JSON.stringify(data).length>3200000)throw Error('Bản lưu vượt giới hạn 3,2 MB');
+ const t=data.trial;if(!t||!Array.isArray(t.treatments))throw Error('Thiếu thiết kế lô');
+ if(t.treatments.some(x=>typeof x!=='string'||!x.trim()||x.length>70)||String(t.seed??'').length>50)throw Error('Tên nghiệm thức hoặc seed không hợp lệ');
+ const normalizedTreatments=R.treatmentsFromText(t.treatments.join('\n'));
+ const trial=R.trialDesign({...t,treatments:normalizedTreatments});
+ let terrain=null,obs=[];
+ if(data.terrain_csv!==null&&data.terrain_csv!==undefined){
+  if(typeof data.terrain_csv!=='string')throw Error('Lưới địa hình JSON không hợp lệ');
+  terrain=R.buildGrid(data.terrain_csv);
+ }
+ if(data.observations_csv!==null&&data.observations_csv!==undefined){
+  if(typeof data.observations_csv!=='string')throw Error('Số liệu trong JSON không hợp lệ');
+  obs=R.parseObservations(data.observations_csv,trial);
+ }
+ // Only mutate browser state AFTER all validation above succeeded.
+ $('v3Treatments').value=trial.treatments.join('\n');$('v3Blocks').value=String(trial.blocks);
+ $('v3Seed').value=trial.seed;$('v3PlotW').value=String(trial.plotWidthM);$('v3PlotL').value=String(trial.plotLengthM);
+ state.trial=trial;renderTrial(trial);
+ if(obs.length)applyObservations(obs,!!data.observations_synthetic);
+ else resetObservations();
+ if(terrain)importTerrain(data.terrain_csv,!!data.terrain_synthetic);
+ else resetTerrain();
+ message('v3TrialMessage','Đã khôi phục thiết kế '+trial.plots.length+' lô từ bản lưu JSON đã được kiểm tra.');
+ return {plots:trial.plots.length,observations:obs.length,terrain:!!terrain};
+}
+function loadDemo(){
+ if(state.observations.length&&!state.isSynthetic&&!window.confirm('Dữ liệu đang mở sẽ bị thay bằng số liệu TỔNG HỢP demo. Bạn có muốn tiếp tục?'))return false;
+ if(!state.trial)throw Error('Chưa có thiết kế lô');
+ const cols=['plot_id','year','harvest_kg','harvest_area_m2','irrigation_m3','labor_hours','notes'];
+ const raw=[];
+ for(const year of [2027,2028])for(const p of state.trial.plots){
+  const i=Number(p.treatment_id.slice(1))-1,seed=(p.block*131+p.position*17+year*7);
+  const kgHa=2700+i*175+(p.block-2.5)*40+(year-2027)*160+Math.sin(seed)*73;
+  raw.push([p.plot_id,year,(kgHa*p.plot_area_m2/10000).toFixed(4),p.plot_area_m2,2.5,7.5,'SYNTHETIC DEMO — KHÔNG PHẢI ĐO ĐẠC']);
+ }
+ const observations=R.parseObservations(R.csvEncode(cols,raw),state.trial);
+ applyObservations(observations,true);
+ return true;
+}
+
 $('v3ObservationFile').addEventListener('change',async event=>{
  const file=event.target.files?.[0];if(!file||!state.trial)return;
  try{
   if(file.size>3000000)throw Error('CSV lớn hơn 3 MB');
   const obs=R.parseObservations(await file.text(),state.trial);
-  const summary=R.summarizeObservations(obs);
-  state.observations=obs;state.summary=summary;
-  const table=$('v3DataRows');table.textContent='';
-  for(const entry of summary){
-   const row=make('tr');
-   for(const value of [entry.year,entry.treatment,entry.plots,fmt.format(entry.meanYieldKgHa),fmt.format(entry.minYieldKgHa),fmt.format(entry.maxYieldKgHa)])row.appendChild(make('td',null,value));
-   table.appendChild(row);
-  }
-  $('v3DataOutput').hidden=false;$('v3DataEmpty').hidden=true;
-  $('v3ObservationsCount').textContent=obs.length+' bản ghi đo đạc · '+summary.length+' nhóm năm/nghiệm thức';
-  message('v3DataMessage','Đã tổng hợp dữ liệu theo kg nhân/ha. Các trung bình là thống kê mô tả, chưa có kiểm định ý nghĩa thống kê.');
+  applyObservations(obs,false);
  }catch(e){message('v3DataMessage','Lỗi nhập số liệu: '+e.message,true)}
 });
 $('v3ExportSummary').addEventListener('click',()=>{

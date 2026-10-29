@@ -1,0 +1,46 @@
+
+/* V4 statistical analysis & portable research workspace */
+.v4-section{background:#f6f8f2}.v4-project-section{background:#e8eee6}
+.v4-workspace{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.v4-analytics,.v4-trend{min-width:0;border:1px solid #dbe5d8;background:#fff;padding:27px}
+.v4-k{font-size:9px;font-weight:800;letter-spacing:1.4px;color:#78a078}
+.v4-analysis-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding-bottom:21px;border-bottom:1px solid #e3ebe1}
+.v4-analysis-top>div{display:flex;flex-direction:column;gap:10px}.v4-analysis-top strong{font-size:18px;color:#244b34;letter-spacing:-.7px}
+.v4-analysis-top label,.v4-pair-select label{display:flex;flex-direction:column;gap:9px;color:#68816b;font-size:10px;font-weight:800}
+.v4-analysis-top select,.v4-pair-select select{border:1px solid #d3e0d1;background:#f4f8f2;color:#31583e;font-weight:700;font-size:12px;min-height:37px;padding:7px 9px;max-width:215px}
+.v4-empty{background:#f1f6eb;text-align:center;margin-top:22px;padding:55px 22px;min-height:280px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px}
+.v4-empty>span{font-family:Georgia,serif;font-size:51px;color:#8aaf78}.v4-empty strong{font-size:16px;color:#365b40}
+.v4-empty p{font-size:11px;line-height:1.9;color:#7d977a;max-width:350px}
+.v4-anova-state{border-left:3px solid #80a775;background:#ecf4e9;color:#4a7850;font-size:11px;line-height:1.8;margin:21px 0 15px;padding:12px 15px}
+.v4-anova-state.warn{border-color:#d3a062;background:#fff5e5;color:#916d46}
+.v4-table-scroll{overflow-x:auto}.v4-table{border-collapse:collapse;width:100%;white-space:nowrap}
+.v4-table th{background:#f0f5ed;color:#799479;text-align:left;font-size:9px;font-weight:800;letter-spacing:.6px;padding:12px}
+.v4-table td{font-size:11px;color:#416148;padding:13px 12px;border-bottom:1px solid #ecf1e8}
+.v4-table td:first-child{font-weight:800}.v4-table td:last-child{font-weight:800;color:#315d3d}
+.v4-diff{border:1px solid #e0e9dd;margin-top:21px;padding:20px}.v4-diff h3{font-size:14px;letter-spacing:-.4px;margin:0 0 16px}
+.v4-pair-select{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.v4-pair-select select{max-width:none;width:100%}
+.v4-pair-result{display:flex;flex-direction:column;gap:6px;margin-top:19px;padding:15px;background:#f1f6ee}
+.v4-pair-result span{font-size:10px;color:#6b8c6d}.v4-pair-result strong{font-size:23px;color:#2c6440}
+.v4-pair-result small{font-size:10px;color:#809580;line-height:1.65}
+.v4-actions{margin-top:15px}.v4-actions button{border:1px solid #cbd9c7;background:#eaf2e6;color:#356941;font-size:11px;font-weight:800;padding:11px 14px}
+#v4TrendChart{display:block;width:100%;height:auto;background:#fafcf7;margin:15px 0 12px;border:1px solid #e1e9dd}
+.v4-legend{display:flex;flex-wrap:wrap;gap:10px;padding:0 2px 13px}.v4-legend span{display:flex;align-items:center;gap:6px;font-size:10px;color:#5d7d5e;font-weight:700}
+.v4-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;flex:none}
+.v4-trend>p{font-size:11px;color:#81957f;line-height:1.85}
+.v4-limit{margin-top:20px;border-left:3px solid #c49d69;background:#fbf3e7;padding:16px;display:flex;flex-direction:column;gap:6px}
+.v4-limit strong{font-size:11px;color:#795c32}.v4-limit span{font-size:10px;color:#997e55;line-height:1.8}
+.v4-sources{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin-top:21px;color:#748972;font-size:11px}
+.v4-sources a{color:#487f50;font-weight:800}.v4-sources a:hover{text-decoration:underline}
+.v4-project-card{background:#19442b;color:#e9f6df;padding:35px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.72fr);gap:35px}
+.v4-project-card .v4-k{color:#b7d79c}.v4-project-card h3{font-size:28px;letter-spacing:-1.1px;margin:18px 0 13px}.v4-project-card p{color:#b9ceba;line-height:1.85;font-size:12px;max-width:520px}
+.v4-project-controls{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+.v4-project-controls button,.v4-project-controls label{display:block;border:1px solid #729471;color:#f7f9f3;background:#2a603e;font-size:12px;font-weight:800;text-align:center;cursor:pointer;padding:15px 17px;margin:0}
+.v4-project-controls button:first-child{background:#dceaac;color:#244b31;border-color:#dceaac}
+.v4-project-controls button:last-of-type{background:transparent;color:#d0e8c9}
+.v4-project-controls .v4-status{font-size:10px;margin:4px 0 0;line-height:1.8;color:#c5d9b8}
+@media(max-width:940px){.v4-workspace{grid-template-columns:1fr}.v4-project-card{grid-template-columns:1fr}.v4-project-card h3{font-size:25px}}
+@media(max-width:550px){.v4-analytics,.v4-trend{padding:18px}.v4-analysis-top{flex-direction:column}.v4-analysis-top select{min-width:150px}.v4-pair-select{grid-template-columns:1fr}.v4-project-card{padding:22px;gap:18px}.v4-sources{flex-direction:column;align-items:flex-start}}
+
+/* Respect native hidden state even when component uses display:flex. */
+.v4-empty[hidden],#v4Analysis[hidden]{display:none!important}
