@@ -26,7 +26,7 @@ function read(){return {
 function update(){
  current=E.evaluate(read());
  const d=current.design,i=current.irrigation,e=current.economics;
- el('v2SceneLabel').textContent=n.format(d.areaHa)+' ha · '+(d.orientation==='contour'?'theo đồng mức':'dọc đường dốc')+' · '+n.format(d.slopeDeg)+'°';
+ el('v2SceneLabel').textContent=n.format(d.areaHa)+' ha · '+(window.CoffeeFieldV3?.terrain?'lưới cao độ CSV':'dốc giả định')+' · '+(d.orientation==='contour'?'theo đồng mức':'dọc dốc')+' · '+n.format(d.slopeDeg)+'°';
  el('v2Corridor').textContent=n.format(d.nominalCorridorM)+' m';
  el('v2CorridorDesc').textContent=(d.corridorPass?'Đạt':'Không đạt')+' phép so sánh rộng: cần '+n.format(d.clearanceNeededM)+' m (thiết bị + khoảng hở).';
  el('v2Corridor').classList.toggle('v2-bad',!d.corridorPass);
@@ -38,7 +38,8 @@ function update(){
  el('v2Wasi').classList.toggle('v2-bad',!d.scopePass);
  const risk=d.slopeDeg>=10?'Độ dốc từ 10° trở lên nằm ngoài phạm vi quy trình WASI 2021 [05]. '
   :d.orientation==='downslope'?'Hàng dọc đường dốc có thể làm tăng rủi ro xói mòn: cần thiết kế bảo vệ đất theo khảo sát. ':'';
- el('v2ModelWarning').textContent=risk+'Mô hình phối cảnh lý tưởng, không lấy dữ liệu độ cao thực (DEM) và không đánh giá an toàn thiết bị.';
+ const imported=window.CoffeeFieldV3?.terrain;
+ el('v2ModelWarning').textContent=(imported?'Đang hiển thị lưới CSV nội suy, co giãn vào sơ đồ vuông (không có CRS/GPS); độ dốc dùng cho kiểm tra WASI vẫn lấy từ thanh điều khiển V2 và không thay thế đo dốc tại chỗ. ':'Không có bản đồ cao độ đo đạc (DEM/GIS). ')+risk+'Mô phỏng không đánh giá an toàn thiết bị.';
  el('v2TotalWater').textContent=n.format(i.totalM3)+' m³';
  el('v2WaterTree').textContent=n.format(i.litersPerTree)+' lít';
  el('v2WaterFlow').textContent=n.format(i.instantaneousLph/1000)+' m³/h';
@@ -97,7 +98,7 @@ function paint(){
  ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
  const baseScale=Math.min(w/155,h/146)*camera.zoom;
  const cy=Math.cos(camera.yaw),sy=Math.sin(camera.yaw),cp=Math.cos(camera.pitch),sp=Math.sin(camera.pitch);
- function ground(x,z){return Math.tan(d.slopeDeg*Math.PI/180)*z}
+ function ground(x,z){const imported=window.CoffeeFieldV3?.heightAt?.(x,z,d.squareSideM);return imported===null||imported===undefined?Math.tan(d.slopeDeg*Math.PI/180)*z:imported}
  function project(x,y,z){
    const rx=x*cy-z*sy,rz=x*sy+z*cy;
    return {x:w*.5+rx*baseScale,y:h*.57+(rz*sp-y*cp)*baseScale,depth:rz*cp+y*sp};
@@ -240,5 +241,6 @@ Object.values(inputs).forEach(node=>node?.addEventListener('input',update));
 if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>paint()).observe(canvas);
 else window.addEventListener('resize',paint);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&flags.playing)setPlaying(false)});
+window.addEventListener('coffeefield-v3-update',update);
 update();
 })();

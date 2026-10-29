@@ -81,3 +81,42 @@ node --check lab-v2.js
 ```
 
 Cấu trúc file: `field-engine.js` là module tính toán thuần, testable trong Node, còn `lab-v2.js` có điều khiển DOM/Canvas. Cả hai được nạp tĩnh và không thu thập dữ liệu người dùng.
+
+## V3 — Terrain CSV + Randomized Field Trial + Harvest Log (29/10/2026)
+
+V3 expands the static, privacy-preserving research site. No server/database, upload-to-cloud, API key or external JavaScript dependency is introduced.
+
+### 1. Elevation CSV
+Use `x_m,z_m,elevation_m` (meter-based local orthogonal coordinates, not latitude/longitude). A complete, regularly-spaced rectangular grid of at least 3×3 and at most 32×32 samples is required. The parser rejects duplicate, missing and malformed samples. The included downloadable example is **synthetic**, not real farm data.
+
+The grid is bilinearly interpolated into the V2 perspective. For display, the uploaded grid is **rescaled to the simplified square model domain**; topographic elevation relief is projected relative to the modeled site's side length. It is NOT a GIS map: no cadastral border, projection definition, GPS coordinates, calibrated distances or validated machine travel paths. The V2 WASI checklist continues using **the manually entered slope**, not independently verifying any slope criterion from the CSV. Its displayed two-criteria result must not be mistaken for agronomic certification.
+
+### 2. On-farm field research (RCBD)
+- Enter 2–6 distinct treatments, 3–8 blocks, plot width/length and deterministic seed.
+- Run seeded Fisher–Yates randomization independently in each block, with each treatment appearing once in each block.
+- Export design CSV (`plot_id,block,position,treatment_id,treatment,plot_area_m2,...`) and a **blank** harvest measurement template. All labels are handled as inert text.
+- Trial area excludes paths, buffers, border effects, topography and random field effects. It is not an engineering layout or validated power analysis.
+- Methods reference: UF/IFAS [6], University of Nebraska On-Farm Research Network.
+
+### 3. Import real measured harvest observations
+Upload CSV with `plot_id,year,harvest_kg,harvest_area_m2` plus optional `irrigation_m3,labor_hours,notes`.
+Only completed records (with harvest data) contribute. The parser rejects unknown plot IDs, duplicate plot+year combinations, invalid years, negative harvests and areas larger than plots. If the design is regenerated, imported observations are cleared to avoid mismatches.
+
+Measured dry coffee bean/green coffee yield per harvested hectare: `harvest_kg / harvest_area_m2 * 10000`. **All harvest_kg values must refer to the same coffee product, ideally green coffee beans, not raw coffee cherries.** Reports use descriptive group means, minima and maxima, and are **not** significance tests or yield predictions. Export study summaries as CSV.
+
+### Suggested research protocol
+Before planting, select field sites/varieties, record site soil and water conditions, design plot replicates and a harvest method, pre-register primary response metrics and randomization seed. Consult a local crop researcher before any real investment, irrigation sizing, machinery purchase or claims about soil conservation. Record measurements across multiple harvest years.
+
+**Research references**
+6. UF/IFAS, Planning and Establishing On-Farm Field Trials — https://ask.ifas.ufl.edu/publication/AG447
+7. Nguyen & Pham (2018), Assessing Soil Erosion by Agricultural and Forestry Production and Proposing Solutions to Mitigate: A Case Study in Son La Province, Vietnam — https://onlinelibrary.wiley.com/doi/10.1155/2018/2397265
+8. Nebraska On-Farm Research Network — https://on-farm-research.unl.edu/protocols/farm-research-standard-protocols/
+
+### QA
+```sh
+node --check field-research.js
+node --check lab-v3.js
+node --check lab-v2.js
+node --test tests/*.test.cjs
+```
+Browser acceptance: Chrome in an isolated temporary headless profile, on both desktop and 390px mobile, with URL tested against local feature branch before deployment and live GitHub Pages after merge. GitHub Actions is deliberately not used.
