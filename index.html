@@ -2,11 +2,11 @@
 <html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0c221a"><meta name="description" content="CoffeeRow Lab: nền tảng nghiên cứu trồng cà phê theo hàng tại Việt Nam. So sánh mật độ, mô phỏng luống, đánh giá cơ giới hóa và thiết kế thí nghiệm.">
 <meta property="og:title" content="CoffeeRow Lab — Tương lai vườn cà phê Việt Nam"><meta property="og:description" content="Nghiên cứu bố trí hàng cà phê, cơ giới hóa và mô phỏng phương án trồng.">
-<title>CoffeeRow Lab — Nghiên cứu cà phê theo hàng tại Việt Nam</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="lab-v2.css"><link rel="stylesheet" href="lab-v3.css"><link rel="stylesheet" href="lab-v4.css"></head>
+<title>CoffeeRow Lab — Nghiên cứu cà phê theo hàng tại Việt Nam</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="lab-v2.css"><link rel="stylesheet" href="lab-v3.css"><link rel="stylesheet" href="lab-v4.css"><link rel="stylesheet" href="lab-v5.css"></head>
 <body>
 <div class="topline"><span class="topline-dot"></span> VIETNAM COFFEE RESEARCH INITIATIVE <span class="topline-right">BETA / THÁNG 10.2026</span></div>
 <header class="header shell"><a class="brand" href="#dau-trang" aria-label="CoffeeRow Lab, về đầu trang"><span class="brand-logo"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 26V8M16 15c-7 0-10-3-11-9 7 0 11 3 11 9Zm0 5c7 0 10-4 11-10-7 1-11 4-11 10Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span>CoffeeRow <b>Lab</b></span></a>
-<nav aria-label="Điều hướng chính"><a href="#van-de">Nghiên cứu</a><a href="#mo-hinh">Mô hình</a><a href="#mo-phong-3d">Mô phỏng 3D</a><a href="#tuoi-nuoc">Tưới nước</a><a href="#kinh-te">Kinh tế</a><a href="#thuc-dia">Thực địa</a><a href="#thi-nghiem">Thí nghiệm</a><a href="#thong-ke">Thống kê</a><a href="#du-an">Dự án</a><a href="#tai-lieu">Tài liệu</a></nav>
+<nav aria-label="Điều hướng chính"><a href="#van-de">Nghiên cứu</a><a href="#mo-hinh">Mô hình</a><a href="#mo-phong-3d">Mô phỏng 3D</a><a href="#tuoi-nuoc">Tưới nước</a><a href="#kinh-te">Kinh tế</a><a href="#thuc-dia">Thực địa</a><a href="#thi-nghiem">Thí nghiệm</a><a href="#thong-ke">Thống kê</a><a href="#du-an">Dự án</a><a href="#chat-luong">Chất lượng</a><a href="#tai-lieu">Tài liệu</a></nav>
 <a class="nav-cta" href="#phong-thi-nghiem">Mở phòng thí nghiệm <span aria-hidden="true">↗</span></a></header>
 <main id="dau-trang">
 <section class="hero"><div class="shell hero-layout"><div class="hero-copy">
@@ -208,13 +208,34 @@ Hàng dày (giả định)</textarea>
    <div class="v4-project-controls"><button type="button" id="v4Save">↓ Tải bản lưu JSON</button><label for="v4RestoreFile">↑ Khôi phục JSON</label><input id="v4RestoreFile" type="file" accept=".json,application/json" class="v3-file-input"><button type="button" id="v4SampleData">✳ Nạp ví dụ tổng hợp cho thống kê</button><p class="v4-status" id="v4ProjectStatus" role="status">Chưa có bản lưu trong phiên này.</p></div>
   </div>
  </div>
-</section><section class="section evidence-section" id="de-cuong"><div class="shell"><div class="section-heading"><div><div class="kicker">12 / PHƯƠNG PHÁP NGHIÊN CỨU</div><h2>Từ mô phỏng <em>đến thực địa.</em></h2></div><p>Không thể kết luận một cấu hình tốt hơn chỉ dựa vào số cây trên mỗi hecta. Cần thử nghiệm có đối chứng và đo lường nhiều mùa vụ.</p></div>
+</section><section class="section v5-section" id="chat-luong">
+<div class="shell">
+ <div class="section-heading"><div><div class="kicker">12 / DATA QUALITY & REPORTING</div><h2>Minh bạch dữ liệu. <em>Báo cáo có thể tái lập.</em></h2></div><p>Kiểm tra độ đầy đủ theo năm và khối, rà soát các bản ghi cần xác minh, rồi xuất báo cáo HTML tự chứa, mở và in PDF trên máy tính. Không lưu số liệu trên máy chủ.</p></div>
+ <div class="v5-dashboard">
+  <article class="v5-panel">
+   <div class="v5-eyebrow">RESEARCH READINESS / KHÔNG PHẢI CHỨNG NHẬN</div>
+   <h3>Kiểm tra đầu vào</h3>
+   <p id="v5Summary" class="v5-summary" role="status">Chưa có số liệu thực địa. Tạo hoặc nhập dự án để đánh giá.</p>
+   <div class="v5-metrics"><div><span>THỜI GIAN CÓ SỐ LIỆU</span><strong id="v5Years">0 năm</strong></div><div><span>BẢN GHI</span><strong id="v5Records">0</strong></div><div><span>NĂM ĐỦ LÔ</span><strong id="v5Complete">0/0</strong></div><div><span>CẦN XEM XÉT</span><strong id="v5Issues">—</strong></div></div>
+   <div class="v5-actions"><button id="v5ExportQuality" type="button">↓ Checklist CSV</button><button id="v5ExportReport" type="button" class="v5-primary">↓ Báo cáo HTML</button></div>
+   <p class="v5-small">Báo cáo chỉ sử dụng số liệu người dùng đã nhập hoặc ví dụ có nhãn. File HTML độc lập, có thể mở trong trình duyệt và dùng chức năng In → Lưu PDF.</p>
+  </article>
+  <article class="v5-panel v5-review">
+   <div class="v5-eyebrow">AUDIT FINDINGS / DỮ LIỆU GỐC KHÔNG BỊ SỬA</div>
+   <h3>Danh sách cần kiểm tra</h3>
+   <div id="v5Findings" class="v5-findings"><p>Chưa có cảnh báo.</p></div>
+  </article>
+ </div>
+ <div class="v5-period-panel"><div class="v5-period-head"><h3>Mức độ bao phủ theo năm</h3><small>Mỗi ô ghi số lô có quan sát / số lô thiết kế; chỉ đủ khối mới dùng ANOVA RCBD.</small></div><div id="v5Coverage" class="v5-coverage"></div></div>
+ <p class="v5-caveat">Cảnh báo năng suất trên 12.000 kg nhân/ha chỉ là ngưỡng nhắc kiểm tra đơn vị, không phải giới hạn sinh học hoặc khuyến nghị năng suất. Ngay cả khi không có cảnh báo, vẫn cần đối chiếu hồ sơ đo, giống, đất, phương pháp thu hoạch và điều kiện thí nghiệm.</p>
+</div></section>
+<section class="section evidence-section" id="de-cuong"><div class="shell"><div class="section-heading"><div><div class="kicker">13 / PHƯƠNG PHÁP NGHIÊN CỨU</div><h2>Từ mô phỏng <em>đến thực địa.</em></h2></div><p>Không thể kết luận một cấu hình tốt hơn chỉ dựa vào số cây trên mỗi hecta. Cần thử nghiệm có đối chứng và đo lường nhiều mùa vụ.</p></div>
 <div class="research-grid"><div class="research-highlight"><div class="research-label">ĐỀ XUẤT PILOT</div><strong>3</strong><h3>nghiệm thức<br>đối chiếu</h3><p>Khởi đầu bằng một khu thí điểm nhỏ; bố trí các lô lặp lại theo điều kiện thực tế và được chuyên gia nông học phản biện.</p><div class="highlight-decoration">✳</div></div><div class="research-steps">
 <div class="research-step"><span>01</span><div><h3>Khảo sát nền</h3><p>Địa hình, đất, pH, tầng canh tác, nguồn nước, khí hậu, giống, bệnh vùng rễ.</p></div></div>
 <div class="research-step"><span>02</span><div><h3>Thiết kế lô có đối chứng</h3><p>Chọn mật độ, số lần lặp, vị trí lô ngẫu nhiên, cùng giống và điều kiện chăm sóc.</p></div></div>
 <div class="research-step"><span>03</span><div><h3>Theo dõi đa chỉ tiêu</h3><p>Sinh trưởng, năng suất nhân, chất lượng, thời gian lao động, nhiên liệu, nước tưới, xói mòn.</p></div></div>
 <div class="research-step"><span>04</span><div><h3>Đánh giá chi phí vòng đời</h3><p>Vốn ban đầu, công cắt tỉa, khả năng máy di chuyển, chi phí/kg nhân, biến động theo vụ.</p></div></div></div></div></div></section>
-<section class="section shell source-section" id="tai-lieu"><div class="section-heading"><div><div class="kicker">13 / CƠ SỞ KHOA HỌC</div><h2>Tài liệu <em>nguyên bản.</em></h2></div><p>Ưu tiên nguồn cơ quan nghiên cứu và tài liệu gốc. Các tham số minh họa được ghi rõ, tránh nhầm với hướng dẫn canh tác chính thức.</p></div>
+<section class="section shell source-section" id="tai-lieu"><div class="section-heading"><div><div class="kicker">14 / CƠ SỞ KHOA HỌC</div><h2>Tài liệu <em>nguyên bản.</em></h2></div><p>Ưu tiên nguồn cơ quan nghiên cứu và tài liệu gốc. Các tham số minh họa được ghi rõ, tránh nhầm với hướng dẫn canh tác chính thức.</p></div>
 <div class="sources"><a target="_blank" rel="noopener noreferrer" href="https://wasi.org.vn/wp-content/uploads/2021/11/QUYET-DINH-BAN-HANH-QUY-TRINH-TAI-CANH-CA-PHE-VOI-2020.pdf"><span class="source-number">[01]</span><span class="source-info"><strong>WASI — Quy trình tái canh cà phê vối theo hướng cơ giới hóa</strong><small>Quyết định 81/QĐ-VNLT (SPQG), 30.12.2020 · PDF · Việt Nam</small></span><span>↗</span></a>
 <a target="_blank" rel="noopener noreferrer" href="https://www.atermaisdigital.cnptia.embrapa.br/web/cafe/planejamento-do-plantio"><span class="source-number">[02]</span><span class="source-info"><strong>Embrapa — Planejamento do Plantio</strong><small>Quy hoạch khoảng cách hàng, đường thao tác, lựa chọn giống · Brazil</small></span><span>↗</span></a>
 <a target="_blank" rel="noopener noreferrer" href="https://worldcoffeeresearch.org/countries/vietnam"><span class="source-number">[03]</span><span class="source-info"><strong>World Coffee Research — Vietnam</strong><small>Bối cảnh sản xuất cà phê Việt Nam và nghiên cứu giống Robusta</small></span><span>↗</span></a>
@@ -225,4 +246,4 @@ Hàng dày (giả định)</textarea>
 <div class="disclaimer"><span class="disclaimer-icon">i</span><p><strong>Lưu ý khoa học:</strong> Công cụ mô phỏng mang tính giáo dục và tiền khả thi, không thay thế khảo sát kỹ thuật. Giống, kiểu tạo tán, máy, độ dốc, chất lượng đất và khí hậu cần được xác nhận trước khi đầu tư. Ví dụ hàng dày “kiểu Brazil” không phải khuyến nghị công nghệ cho Việt Nam.</p></div></section>
 <section class="closing"><div class="shell closing-layout"><div><span>COFFEEROW LAB / 2026</span><h2>Khởi đầu với một câu hỏi.<br><em>Tiến tới một mô hình phù hợp.</em></h2></div><a class="btn btn-primary" href="#phong-thi-nghiem">Thử thiết kế vườn ↗</a></div></section>
 </main><footer class="footer shell"><div class="footer-brand">CoffeeRow <b>Lab</b><span>© 2026 · Vietnam Coffee Research Initiative</span></div><p>Trang nghiên cứu độc lập · Dữ liệu mô phỏng được tính ngay trên trình duyệt.</p><a href="#dau-trang">Trở về đầu trang ↑</a></footer>
-<script src="app.js" defer></script><script src="field-engine.js" defer></script><script src="lab-v2.js" defer></script><script src="field-research.js" defer></script><script src="lab-v3.js" defer></script><script src="field-statistics.js" defer></script><script src="lab-v4.js" defer></script></body></html>
+<script src="app.js" defer></script><script src="field-engine.js" defer></script><script src="lab-v2.js" defer></script><script src="field-research.js" defer></script><script src="lab-v3.js" defer></script><script src="field-statistics.js" defer></script><script src="lab-v4.js" defer></script><script src="field-audit.js" defer></script><script src="lab-v5.js" defer></script></body></html>

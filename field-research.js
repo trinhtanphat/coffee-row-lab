@@ -20,7 +20,7 @@ function csvParse(input){
  if(rows.some(r=>r.length!==headers.length))throw Error('Các dòng CSV phải có cùng số cột');
  return {headers,rows:rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,r[i]])))};
 }
-function csvEscape(value){let cell=String(value??'');if(typeof value==='string'&&/^[\\s]*[=+@-]/.test(cell)&&!/^[-+]?\\d+(\\.\\d+)?$/.test(cell.trim()))cell="'"+cell;return '"'+cell.replace(/"/g,'""')+'"'}
+function csvEscape(value){let cell=String(value??'');const t=cell.trimStart();if(typeof value==='string'&&['=','+','-','@'].includes(t[0])&&!Number.isFinite(Number(t)))cell="'"+cell;return '"'+cell.replace(/"/g,'""')+'"'}
 function csvEncode(headers,rows){return '\ufeff'+[headers,...rows].map(r=>r.map(csvEscape).join(',')).join('\r\n')+'\r\n'}
 function numeric(v,name){if(v===''||v==null||!Number.isFinite(Number(v)))throw Error(name+' phải là số hợp lệ');return Number(v)}
 function buildGrid(csv){
