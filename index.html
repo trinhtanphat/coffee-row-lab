@@ -2,11 +2,11 @@
 <html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0c221a"><meta name="description" content="CoffeeRow Lab: nền tảng nghiên cứu trồng cà phê theo hàng tại Việt Nam. So sánh mật độ, mô phỏng luống, đánh giá cơ giới hóa và thiết kế thí nghiệm.">
 <meta property="og:title" content="CoffeeRow Lab — Tương lai vườn cà phê Việt Nam"><meta property="og:description" content="Nghiên cứu bố trí hàng cà phê, cơ giới hóa và mô phỏng phương án trồng.">
-<title>CoffeeRow Lab — Nghiên cứu cà phê theo hàng tại Việt Nam</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="lab-v2.css"></head>
+<title>CoffeeRow Lab — Nghiên cứu cà phê theo hàng tại Việt Nam</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="lab-v2.css"><link rel="stylesheet" href="lab-v3.css"></head>
 <body>
 <div class="topline"><span class="topline-dot"></span> VIETNAM COFFEE RESEARCH INITIATIVE <span class="topline-right">BETA / THÁNG 10.2026</span></div>
 <header class="header shell"><a class="brand" href="#dau-trang" aria-label="CoffeeRow Lab, về đầu trang"><span class="brand-logo"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 26V8M16 15c-7 0-10-3-11-9 7 0 11 3 11 9Zm0 5c7 0 10-4 11-10-7 1-11 4-11 10Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span>CoffeeRow <b>Lab</b></span></a>
-<nav aria-label="Điều hướng chính"><a href="#van-de">Nghiên cứu</a><a href="#mo-hinh">Mô hình</a><a href="#mo-phong-3d">Mô phỏng 3D</a><a href="#tuoi-nuoc">Tưới nước</a><a href="#kinh-te">Kinh tế</a><a href="#tai-lieu">Tài liệu</a></nav>
+<nav aria-label="Điều hướng chính"><a href="#van-de">Nghiên cứu</a><a href="#mo-hinh">Mô hình</a><a href="#mo-phong-3d">Mô phỏng 3D</a><a href="#tuoi-nuoc">Tưới nước</a><a href="#kinh-te">Kinh tế</a><a href="#thuc-dia">Thực địa</a><a href="#thi-nghiem">Thí nghiệm</a><a href="#tai-lieu">Tài liệu</a></nav>
 <a class="nav-cta" href="#phong-thi-nghiem">Mở phòng thí nghiệm <span aria-hidden="true">↗</span></a></header>
 <main id="dau-trang">
 <section class="hero"><div class="shell hero-layout"><div class="hero-copy">
@@ -104,19 +104,87 @@
     </div></div>
   </div>
 </section>
-<section class="section evidence-section" id="de-cuong"><div class="shell"><div class="section-heading"><div><div class="kicker">07 / PHƯƠNG PHÁP NGHIÊN CỨU</div><h2>Từ mô phỏng <em>đến thực địa.</em></h2></div><p>Không thể kết luận một cấu hình tốt hơn chỉ dựa vào số cây trên mỗi hecta. Cần thử nghiệm có đối chứng và đo lường nhiều mùa vụ.</p></div>
+<section class="section v3-section" id="thuc-dia">
+<div class="shell">
+  <div class="section-heading"><div><div class="kicker">07 / DỮ LIỆU KHU ĐẤT</div><h2>Đưa địa hình <em>vào nghiên cứu.</em></h2></div><p>Nhập lưới khảo sát cao độ ở hệ tọa độ mét cục bộ để thay thế mặt dốc giả định trong mô hình V2. Tất cả được xử lý ngay trong trình duyệt; không tự gửi dữ liệu ra máy chủ.</p></div>
+  <div class="v3-grid">
+    <article class="v3-card v3-terrain">
+      <div class="v3-card-heading"><span>01 / IMPORT ELEVATION GRID</span><span class="v3-id">TERRAIN.CSV</span></div>
+      <h3>Nhập số đo cao độ</h3>
+      <p>CSV gồm <code>x_m,z_m,elevation_m</code>; lưới chữ nhật cách đều, đầy đủ 3×3–32×32 điểm. Tọa độ mét cục bộ, không phải kinh độ/vĩ độ.</p>
+      <div class="v3-actions">
+        <label class="v3-button primary" for="v3TerrainFile">↑ Chọn tệp CSV</label>
+        <input id="v3TerrainFile" type="file" accept=".csv,text/csv" class="v3-file-input">
+        <button id="v3TerrainExample" class="v3-button" type="button">Mô phỏng ví dụ</button>
+        <button id="v3TerrainSample" class="v3-button" type="button">↓ CSV mẫu</button>
+        <button id="v3TerrainClear" class="v3-button" type="button">↺ Gỡ địa hình</button>
+      </div>
+      <div class="v3-terrain-summary"><div><span>TRẠNG THÁI DỮ LIỆU</span><strong id="v3TerrainStatus">Chưa tải dữ liệu</strong></div><div><span>LƯỚI ĐO</span><strong id="v3TerrainGrid">—</strong></div><div><span>BIÊN ĐỘ CAO ĐỘ</span><strong id="v3TerrainRelief">—</strong></div><div><span>DỐC CẠNH LƯỚI LỚN NHẤT</span><strong id="v3TerrainSlope">—</strong></div></div>
+      <p id="v3TerrainMessage" class="v3-hint" role="status">Sơ đồ 3D phía trên hiện đang dùng dốc giả định. Chọn tệp hợp lệ để cập nhật.</p>
+      <p class="v3-caveat">Lưới được co giãn vào mặt bằng mô phỏng; chưa ghép ranh đất, CRS/GPS, đường đồng mức thật hay điều chỉnh máy theo độ dốc cục bộ. Số đo cần được khảo sát và xác minh.</p>
+    </article>
+    <article class="v3-card v3-study-reference">
+      <div class="v3-card-heading"><span>02 / RESEARCH METHOD</span><span class="v3-id">DATA QUALITY</span></div>
+      <h3>Không suy luận từ mô hình giả lập</h3>
+      <p>Ưu tiên số đo cao độ thực, thí nghiệm có lặp lại, và báo cáo số liệu cùng đơn vị. Các yếu tố cần được ghi nhận khi triển khai:</p>
+      <div class="v3-ref-list"><div><span>01</span><div><b>Không gian & địa hình</b><small>Độ cao, độ dốc, nước chảy tràn và vị trí đường nội bộ</small></div></div><div><span>02</span><div><b>Thử nghiệm ngẫu nhiên theo khối</b><small>Mỗi nghiệm thức xuất hiện đúng một lần trong từng khối</small></div></div><div><span>03</span><div><b>Nhật ký theo năm/vụ</b><small>Năng suất nhân kg/ha, diện tích thu hoạch và công lao động</small></div></div></div>
+      <a href="https://ask.ifas.ufl.edu/publication/AG447" target="_blank" rel="noopener noreferrer">Hướng dẫn thí nghiệm đồng ruộng — UF/IFAS ↗</a>
+      <a href="https://onlinelibrary.wiley.com/doi/10.1155/2018/2397265" target="_blank" rel="noopener noreferrer">Nghiên cứu chống xói mòn cà phê Sơn La ↗</a>
+    </article>
+  </div>
+</div></section>
+<section class="section v3-trial-section" id="thi-nghiem">
+<div class="shell"><div class="section-heading"><div><div class="kicker">08 / THIẾT KẾ THÍ NGHIỆM</div><h2>Tạo thí nghiệm <em>có đối chứng.</em></h2></div><p>Ngẫu nhiên hóa nghiệm thức trong từng khối lặp (RCBD), cố định hạt giống ngẫu nhiên để tái lập. Công cụ tạo sơ đồ và bảng mẫu thu thập số liệu, không tính kiểm định ý nghĩa thống kê.</p></div>
+  <div class="v3-trial-layout">
+    <div class="v3-trial-controls">
+      <label for="v3Treatments">Nghiệm thức — mỗi dòng một loại</label>
+      <textarea id="v3Treatments" rows="4" spellcheck="false">Đối chứng 3 × 3 m
+WASI 3,2 × 1,5 m
+Hàng dày (giả định)</textarea>
+      <div class="v3-trial-input-grid">
+        <div><label for="v3Blocks">Số khối lặp</label><input id="v3Blocks" type="number" min="3" max="8" step="1" value="4"></div>
+        <div><label for="v3Seed">Hạt giống ngẫu nhiên</label><input id="v3Seed" type="text" maxlength="50" value="2026"></div>
+        <div><label for="v3PlotW">Rộng lô (m)</label><input id="v3PlotW" type="number" min="5" max="200" value="20"></div>
+        <div><label for="v3PlotL">Dài lô (m)</label><input id="v3PlotL" type="number" min="5" max="200" value="30"></div>
+      </div>
+      <button type="button" id="v3Generate" class="v3-generate">↻ Tạo phân bố ngẫu nhiên</button>
+      <p class="v3-caveat">Bố trí hình học chưa gồm đường đi, vùng đệm, cách ly, hiệu ứng cạnh và đồng nhất đất. Cần chuyên gia quyết định kích thước lô và số mẫu phù hợp.</p>
+    </div>
+    <div class="v3-trial-results">
+       <div class="v3-trial-top"><div><span>RANDOMIZED COMPLETE BLOCK DESIGN</span><strong id="v3TrialTitle">3 nghiệm thức × 4 khối</strong></div><div><small>TỔNG DIỆN TÍCH LÔ (CHƯA TÍNH ĐƯỜNG)</small><b id="v3TrialArea">7.200 m²</b></div></div>
+       <div id="v3TrialGrid" class="v3-trial-blocks" aria-label="Sơ đồ phân bổ nghiệm thức theo khối"></div>
+       <div id="v3TrialLegend" class="v3-trial-legend"></div>
+       <div class="v3-trial-export"><button type="button" id="v3ExportLayout">↓ Xuất danh sách phân lô CSV</button><button type="button" id="v3ExportTemplate">↓ Mẫu nhập năng suất CSV</button></div>
+       <div id="v3TrialMessage" class="v3-hint" role="status">Bố trí sẽ cố định nếu giữ nguyên seed.</div>
+    </div>
+  </div>
+</div></section>
+<section class="section v3-data-section" id="nang-suat">
+<div class="shell"><div class="section-heading"><div><div class="kicker">09 / NHẬT KÝ THỰC NGHIỆM</div><h2>So sánh từ <em>dữ liệu thực đo.</em></h2></div><p>Nhập sản lượng <strong>cà phê nhân (kg)</strong> theo mã lô/năm, tự tính kg nhân/ha theo diện tích thu hoạch và trung bình từng nghiệm thức. Không trộn với khối lượng quả tươi; không tự tạo năng suất mẫu.</p></div>
+  <div class="v3-data-panel">
+    <div class="v3-data-upload"><div><h3>Import nhật ký thu hoạch</h3><p>Dùng file mẫu xuất từ thiết kế phía trên; nhập <code>harvest_kg</code>, <code>harvest_area_m2</code>. Chỉ những dòng có thu hoạch được thống kê.</p></div><label for="v3ObservationFile" class="v3-button primary">↑ Nhập CSV số liệu</label><input type="file" id="v3ObservationFile" class="v3-file-input" accept=".csv,text/csv"></div>
+    <div id="v3DataEmpty" class="v3-data-empty"><span>◎</span><strong>Chưa có số liệu thực địa</strong><p>Tải file mẫu, đo đạc và điền giá trị từng lô trước khi nhập lại.</p></div>
+    <div id="v3DataOutput" hidden><div class="v3-data-banner"><span id="v3ObservationsCount">0 bản ghi</span><small>Thống kê mô tả, chưa xét độ lệch giữa các khối, kiểm định thống kê hay sai số thiết kế.</small></div>
+    <div class="v3-data-table-wrap"><table class="v3-data-table"><thead><tr><th>Năm</th><th>Nghiệm thức</th><th>Lô có số đo</th><th>Trung bình (kg nhân/ha)</th><th>Thấp nhất</th><th>Cao nhất</th></tr></thead><tbody id="v3DataRows"></tbody></table></div>
+    <button id="v3ExportSummary" class="v3-button" type="button">↓ Xuất thống kê CSV</button></div>
+    <p id="v3DataMessage" class="v3-hint" role="status">Không gửi dữ liệu cá nhân, tọa độ hoặc kết quả nông nghiệp lên máy chủ.</p>
+  </div>
+</div></section>
+<section class="section evidence-section" id="de-cuong"><div class="shell"><div class="section-heading"><div><div class="kicker">10 / PHƯƠNG PHÁP NGHIÊN CỨU</div><h2>Từ mô phỏng <em>đến thực địa.</em></h2></div><p>Không thể kết luận một cấu hình tốt hơn chỉ dựa vào số cây trên mỗi hecta. Cần thử nghiệm có đối chứng và đo lường nhiều mùa vụ.</p></div>
 <div class="research-grid"><div class="research-highlight"><div class="research-label">ĐỀ XUẤT PILOT</div><strong>3</strong><h3>nghiệm thức<br>đối chiếu</h3><p>Khởi đầu bằng một khu thí điểm nhỏ; bố trí các lô lặp lại theo điều kiện thực tế và được chuyên gia nông học phản biện.</p><div class="highlight-decoration">✳</div></div><div class="research-steps">
 <div class="research-step"><span>01</span><div><h3>Khảo sát nền</h3><p>Địa hình, đất, pH, tầng canh tác, nguồn nước, khí hậu, giống, bệnh vùng rễ.</p></div></div>
 <div class="research-step"><span>02</span><div><h3>Thiết kế lô có đối chứng</h3><p>Chọn mật độ, số lần lặp, vị trí lô ngẫu nhiên, cùng giống và điều kiện chăm sóc.</p></div></div>
 <div class="research-step"><span>03</span><div><h3>Theo dõi đa chỉ tiêu</h3><p>Sinh trưởng, năng suất nhân, chất lượng, thời gian lao động, nhiên liệu, nước tưới, xói mòn.</p></div></div>
 <div class="research-step"><span>04</span><div><h3>Đánh giá chi phí vòng đời</h3><p>Vốn ban đầu, công cắt tỉa, khả năng máy di chuyển, chi phí/kg nhân, biến động theo vụ.</p></div></div></div></div></div></section>
-<section class="section shell source-section" id="tai-lieu"><div class="section-heading"><div><div class="kicker">08 / CƠ SỞ KHOA HỌC</div><h2>Tài liệu <em>nguyên bản.</em></h2></div><p>Ưu tiên nguồn cơ quan nghiên cứu và tài liệu gốc. Các tham số minh họa được ghi rõ, tránh nhầm với hướng dẫn canh tác chính thức.</p></div>
+<section class="section shell source-section" id="tai-lieu"><div class="section-heading"><div><div class="kicker">11 / CƠ SỞ KHOA HỌC</div><h2>Tài liệu <em>nguyên bản.</em></h2></div><p>Ưu tiên nguồn cơ quan nghiên cứu và tài liệu gốc. Các tham số minh họa được ghi rõ, tránh nhầm với hướng dẫn canh tác chính thức.</p></div>
 <div class="sources"><a target="_blank" rel="noopener noreferrer" href="https://wasi.org.vn/wp-content/uploads/2021/11/QUYET-DINH-BAN-HANH-QUY-TRINH-TAI-CANH-CA-PHE-VOI-2020.pdf"><span class="source-number">[01]</span><span class="source-info"><strong>WASI — Quy trình tái canh cà phê vối theo hướng cơ giới hóa</strong><small>Quyết định 81/QĐ-VNLT (SPQG), 30.12.2020 · PDF · Việt Nam</small></span><span>↗</span></a>
 <a target="_blank" rel="noopener noreferrer" href="https://www.atermaisdigital.cnptia.embrapa.br/web/cafe/planejamento-do-plantio"><span class="source-number">[02]</span><span class="source-info"><strong>Embrapa — Planejamento do Plantio</strong><small>Quy hoạch khoảng cách hàng, đường thao tác, lựa chọn giống · Brazil</small></span><span>↗</span></a>
 <a target="_blank" rel="noopener noreferrer" href="https://worldcoffeeresearch.org/countries/vietnam"><span class="source-number">[03]</span><span class="source-info"><strong>World Coffee Research — Vietnam</strong><small>Bối cảnh sản xuất cà phê Việt Nam và nghiên cứu giống Robusta</small></span><span>↗</span></a>
 <a target="_blank" rel="noopener noreferrer" href="https://apct.sede.embrapa.br/pab/pt_BR/article/view/8586"><span class="source-number">[04]</span><span class="source-info"><strong>Espaçamento de cultivo — Pesquisa Agropecuária Brasileira</strong><small>Nghiên cứu ảnh hưởng mật độ đối với cà phê Arabica; không áp dụng trực tiếp cho Robusta</small></span><span>↗</span></a>
-<a target="_blank" rel="noopener noreferrer" href="https://wasi.org.vn/wp-content/uploads/2021/11/QUYET-DINH-CONG-NHAN-TBKT-QUY-TRINH-TAI-CANH-THEO-HUONG-CO-GIOI-HOA.pdf"><span class="source-number">[05]</span><span class="source-info"><strong>Cục Trồng trọt — Quy trình canh tác tổng hợp cà phê vối tái canh theo hướng cơ giới hóa</strong><small>Quyết định 97/QĐ-TT-CCN · 11.05.2021 · độ dốc &lt;10°, diện tích &gt;2 ha · Việt Nam</small></span><span>↗</span></a></div>
+<a target="_blank" rel="noopener noreferrer" href="https://wasi.org.vn/wp-content/uploads/2021/11/QUYET-DINH-CONG-NHAN-TBKT-QUY-TRINH-TAI-CANH-THEO-HUONG-CO-GIOI-HOA.pdf"><span class="source-number">[05]</span><span class="source-info"><strong>Cục Trồng trọt — Quy trình canh tác tổng hợp cà phê vối tái canh theo hướng cơ giới hóa</strong><small>Quyết định 97/QĐ-TT-CCN · 11.05.2021 · độ dốc &lt;10°, diện tích &gt;2 ha · Việt Nam</small></span><span>↗</span></a>
+<a target="_blank" rel="noopener noreferrer" href="https://ask.ifas.ufl.edu/publication/AG447"><span class="source-number">[06]</span><span class="source-info"><strong>UF/IFAS — Planning and Establishing On-Farm Field Trials</strong><small>Bố trí nghiệm thức có đối chứng và lặp lại theo khối; ngẫu nhiên độc lập từng khối</small></span><span>↗</span></a>
+<a target="_blank" rel="noopener noreferrer" href="https://onlinelibrary.wiley.com/doi/10.1155/2018/2397265"><span class="source-number">[07]</span><span class="source-info"><strong>Nguyen &amp; Pham (2018) — Soil erosion mitigation in Son La</strong><small>Nghiên cứu xói mòn đất trên đất dốc và biện pháp giảm thiểu khi canh tác cà phê</small></span><span>↗</span></a></div>
 <div class="disclaimer"><span class="disclaimer-icon">i</span><p><strong>Lưu ý khoa học:</strong> Công cụ mô phỏng mang tính giáo dục và tiền khả thi, không thay thế khảo sát kỹ thuật. Giống, kiểu tạo tán, máy, độ dốc, chất lượng đất và khí hậu cần được xác nhận trước khi đầu tư. Ví dụ hàng dày “kiểu Brazil” không phải khuyến nghị công nghệ cho Việt Nam.</p></div></section>
 <section class="closing"><div class="shell closing-layout"><div><span>COFFEEROW LAB / 2026</span><h2>Khởi đầu với một câu hỏi.<br><em>Tiến tới một mô hình phù hợp.</em></h2></div><a class="btn btn-primary" href="#phong-thi-nghiem">Thử thiết kế vườn ↗</a></div></section>
 </main><footer class="footer shell"><div class="footer-brand">CoffeeRow <b>Lab</b><span>© 2026 · Vietnam Coffee Research Initiative</span></div><p>Trang nghiên cứu độc lập · Dữ liệu mô phỏng được tính ngay trên trình duyệt.</p><a href="#dau-trang">Trở về đầu trang ↑</a></footer>
-<script src="app.js" defer></script><script src="field-engine.js" defer></script><script src="lab-v2.js" defer></script></body></html>
+<script src="app.js" defer></script><script src="field-engine.js" defer></script><script src="lab-v2.js" defer></script><script src="field-research.js" defer></script><script src="lab-v3.js" defer></script></body></html>
