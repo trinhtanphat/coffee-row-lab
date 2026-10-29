@@ -71,3 +71,5 @@ test('observations reject invalid area, year, duplicate plot-year, unknown plot'
 test('Vietnamese decimal commas in treatment labels are preserved',()=>{const names=R.treatmentsFromText('Đối chứng 3 × 3 m\nWASI 3,2 × 1,5 m\nHàng dày (giả định)');assert.equal(names.length,3);assert.equal(names[1],'WASI 3,2 × 1,5 m')});
 
 test('CSV exports neutralize spreadsheet formula injection in string labels',()=>{const csv=R.csvEncode(['treatment','yield'],[['=HYPERLINK(\"https://example.com\")',-4],['@SUM(1,1)',2]]);assert.ok(csv.includes("'=HYPERLINK"));assert.ok(csv.includes("'@SUM"));assert.ok(csv.includes('"-4"'))});
+
+test('CSV formula injection with leading whitespace is neutralized',()=>{const cell=R.csvEncode(['note'],[['   =HYPERLINK(1,2)']]);assert.ok(cell.includes("'   =HYPERLINK"),'Spreadsheet formula must have safe apostrophe prefix');});

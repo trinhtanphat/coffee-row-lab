@@ -129,3 +129,12 @@ Browser acceptance: Chrome in an isolated temporary headless profile, on both de
 - Optional, clearly marked synthetic example measurements for UI research demonstration, never mislabeled as field data.
 
 Technical methods, assumptions and schemas: [V4 statistical reference](docs/research-v4-statistics.md). Tests remain local; all original V1–V3 features stay supported.
+
+## V5.0.0 — Chất lượng dữ liệu và báo cáo cục bộ
+
+- Phần **Chất lượng** kiểm tra độ đầy đủ theo năm và khối, lỗi định dạng/diện tích, năng suất cần đối chiếu và cờ nguồn **SYNTHETIC**; không tự sửa hoặc xóa dữ liệu.
+- Xuất **Checklist CSV** và **báo cáo HTML độc lập** có thể lưu/in PDF trực tiếp từ trình duyệt, không upload tệp lên máy chủ.
+- Đã tăng cường CSV export để vô hiệu hóa công thức bảng tính xuất hiện sau khoảng trắng.
+- [Giới hạn và tiêu chí phát hành V5](docs/research-v5-quality-release.md)
+
+Website nghiên cứu hiện chỉ bảo đảm các tính năng phần mềm được kiểm thử; đánh giá thực địa, chất lượng số liệu và hiệu quả nông nghiệp cần dữ liệu thật và phản biện chuyên gia.
