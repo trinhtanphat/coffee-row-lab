@@ -120,3 +120,12 @@ node --check lab-v2.js
 node --test tests/*.test.cjs
 ```
 Browser acceptance: Chrome in an isolated temporary headless profile, on both desktop and 390px mobile, with URL tested against local feature branch before deployment and live GitHub Pages after merge. GitHub Actions is deliberately not used.
+
+## V4 (29/10/2026) — Statistical Research Workspace
+
+- ANOVA RCBD per year only when every study plot has a valid observation, with correct treatment/block/error decomposition and degrees of freedom; no p-value or statistical-significance claim.
+- Paired within-block differences (B − A) and descriptive longitudinal trends, without treating repeated plot measurements across years as independent.
+- Export/re-import project JSON including trial allocation, terrain CSV and measured observation CSV, with synthetic-data provenance labels. Validate the entire project before replacing state.
+- Optional, clearly marked synthetic example measurements for UI research demonstration, never mislabeled as field data.
+
+Technical methods, assumptions and schemas: [V4 statistical reference](docs/research-v4-statistics.md). Tests remain local; all original V1–V3 features stay supported.
