@@ -1,0 +1,72 @@
+
+/* Research studio V2 — progressive enhancement; original v1 styles remain available */
+.advanced-section{background:#e8ede4;border-top:1px solid #d7e1d4}
+.advanced-section .section-heading,.irrigation-section .section-heading,.economics-section .section-heading{margin-bottom:30px}
+.v2-top-note{display:flex;align-items:center;gap:12px;background:#244332;color:#d3e7ba;padding:15px 21px;font-size:10px;font-weight:800;letter-spacing:1px}
+.v2-top-note>span:last-child{font-weight:500;letter-spacing:0;color:#b8cab5;margin-left:auto;font-size:11px}
+.v2-studio{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(285px,.75fr);background:white;border:1px solid #dae3d5}
+.v2-visual{min-width:0;border-right:1px solid #dce5d9}
+.v2-canvas-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;gap:14px}
+.v2-canvas-head>div:first-child{display:flex;flex-direction:column;gap:5px}
+.v2-canvas-head strong{font-size:15px;color:#24492c}
+.v2-canvas-head span{font-size:11px;color:#849a85}
+.v2-canvas-tools{display:flex;gap:7px}
+.v2-canvas-tools button{border:1px solid #d5e1d1;background:#f4f7ee;color:#466c4b;padding:9px 10px;font-size:11px;font-weight:800;border-radius:3px}
+#terrainCanvas{display:block;width:100%;height:auto;aspect-ratio:1120/650;background:linear-gradient(#dce6dc,#c4d8ba);cursor:grab;touch-action:pan-y}
+#terrainCanvas.dragging{cursor:grabbing;touch-action:none}
+.v2-canvas-bottom{display:flex;flex-wrap:wrap;align-items:center;gap:15px;background:#eef4e8;border-top:1px solid #d6e2d0;color:#536e52;font-size:10px;font-weight:700;padding:13px 19px}
+.v2-canvas-bottom span{display:inline-flex;gap:6px;align-items:center}
+.v2-canvas-bottom span:last-child{margin-left:auto;color:#7e907b;font-weight:500}
+.v2-key{width:11px;height:11px;border-radius:50%;background:#47713b;display:inline-block}
+.v2-key.pipe{background:#3d9bb0}.v2-key.route{background:#c1a26c}
+.v2-model-warning{margin:16px 18px 18px;background:#fff6e9;border-left:3px solid #bc955e;padding:12px 14px;font-size:11px;color:#856b44;line-height:1.8}
+.v2-control{padding:24px;min-width:0}
+.v2-panel-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:800;font-size:10px;letter-spacing:1.3px;color:#466e4d;border-bottom:1px solid #e1e8dc;padding-bottom:18px}
+.v2-panel-title b{font-size:9px;color:#85a483}
+.v2-control-copy{font-size:11px;line-height:1.75;color:#8b9d88;padding:15px 0 2px}
+.v2-control-field{display:flex;flex-direction:column;gap:8px;margin-top:17px}
+.v2-control-field label{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:11px;color:#405d46;font-weight:750}
+.v2-control-field label span{font-size:10px;font-weight:600;color:#829981;text-align:right}
+.v2-control-field input,.v2-control-field select{min-width:0;width:100%;height:41px;padding:0 11px;background:#f9fbf6;border:1px solid #d6e0d3;font-size:13px;font-weight:700;color:#2b5637;border-radius:2px}
+.v2-toggles{display:flex;flex-direction:column;gap:11px;margin-top:18px}
+.v2-toggles label{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;color:#536d55}
+.v2-toggles input{accent-color:#3d7846;width:16px;height:16px}
+.v2-control-actions{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}
+.v2-control-actions button{border:1px solid #326c3d;padding:12px 13px;font-size:11px;font-weight:800;flex:1;background:#1f5531;color:#fff;min-width:130px}
+.v2-control-actions button:last-child{background:#edf3e8;color:#426a46;border-color:#d0ddce}
+.v2-checks{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:14px}
+.v2-checks>div{background:#fff;border:1px solid #dae3d5;display:flex;flex-direction:column;padding:18px 22px;gap:7px}
+.v2-checks span{font-size:9px;letter-spacing:1px;color:#859884;font-weight:800}
+.v2-checks strong{font-size:25px;letter-spacing:-1px;color:#29563b}
+.v2-checks strong.v2-bad{color:#ad7045}
+.v2-checks small{font-size:10px;line-height:1.6;color:#829582}
+.v2-subtext{font-size:11px;color:#829380;line-height:1.9;margin:15px 1px 0}
+.irrigation-section{background:#f7faf4}
+.v2-irrigation{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.5fr);border:1px solid #d6e2d4;background:white}
+.v2-irrigation-control{padding:26px 31px;border-right:1px solid #dce6d9}
+.v2-irrigation-numbers{padding:26px 30px}
+.v2-help{font-size:10px;color:#819581;line-height:1.9;margin:20px 0 0}
+.v2-water-hero{background:#1c4531;color:#eaf5df;padding:28px 30px}
+.v2-water-hero>span{font-size:10px;color:#b8d09b;letter-spacing:1.3px;font-weight:800}
+.v2-water-hero strong{display:block;font-size:clamp(38px,4.5vw,60px);letter-spacing:-2.8px;margin:19px 0 8px}
+.v2-water-hero strong small{font-size:22px;font-weight:500}
+.v2-water-hero p{font-size:11px;color:#c6d9c3;margin:0;line-height:1.8}
+.v2-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:13px}
+.v2-mini-grid>div{padding:19px 15px;background:#eef5ec;display:flex;flex-direction:column;gap:13px}
+.v2-mini-grid span{font-size:9px;letter-spacing:.8px;font-weight:800;color:#7f997d;line-height:1.5}
+.v2-mini-grid strong{font-size:17px;color:#315b38;letter-spacing:-.5px}
+.economics-section{background:#eef3e9}
+.v2-economics{display:grid;grid-template-columns:minmax(250px,.82fr) minmax(0,1.65fr);border:1px solid #d7e1d1;background:white}
+.v2-econ-controls{padding:28px 31px;border-right:1px solid #dce6d9}
+.v2-econ-reset{margin-top:22px;width:100%;background:#eef4e9;color:#416b43;border:1px solid #d3e2ce;padding:13px;font-size:11px;font-weight:800}
+.v2-econ-outputs{min-width:0;padding:25px 27px}
+.v2-econ-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.v2-econ-metrics>div{background:#edf4e7;padding:17px 12px;display:flex;flex-direction:column;gap:9px}
+.v2-econ-metrics span{font-size:9px;line-height:1.6;color:#799377;font-weight:800;letter-spacing:.3px}
+.v2-econ-metrics strong{font-size:20px;color:#2b5735;letter-spacing:-.6px}
+.v2-chart-header{display:flex;justify-content:space-between;gap:20px;align-items:center;margin:26px 0 8px}
+.v2-chart-header strong{font-size:14px;color:#34563a}
+.v2-chart-header small{font-size:10px;color:#688267}
+#v2Cashflow{display:block;width:100%;height:auto;background:#fcfdf9;border:1px solid #e6ede3;min-height:185px}
+@media(max-width:960px){.v2-studio{grid-template-columns:1fr}.v2-visual{border-right:0;border-bottom:1px solid #dce5d9}.v2-control{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px}.v2-panel-title,.v2-control-copy,.v2-toggles,.v2-control-actions{grid-column:1/-1}.v2-irrigation,.v2-economics{grid-template-columns:1fr}.v2-irrigation-control,.v2-econ-controls{border-right:0;border-bottom:1px solid #dce6d9}}
+@media(max-width:600px){.v2-top-note{flex-wrap:wrap;gap:9px}.v2-top-note>span:last-child{width:100%;margin-left:0}.v2-canvas-head{padding:15px;align-items:start;flex-wrap:wrap}.v2-canvas-bottom span:last-child{margin-left:0;width:100%}.v2-checks,.v2-mini-grid,.v2-econ-metrics{grid-template-columns:1fr}.v2-control{grid-template-columns:1fr;padding:18px}.v2-irrigation-control,.v2-irrigation-numbers,.v2-econ-controls,.v2-econ-outputs{padding:19px}.v2-chart-header{align-items:flex-start;flex-direction:column;gap:4px}.v2-water-hero{padding:20px}.v2-econ-metrics>div{gap:4px}}

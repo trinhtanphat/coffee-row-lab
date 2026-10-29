@@ -57,23 +57,23 @@ function update(){
  const key=Object.keys(PRESETS).find(k=>Math.abs(PRESETS[k].row-m.row)<.051&&Math.abs(PRESETS[k].plant-m.plant)<.051);
  $('mapTitle').textContent=key?PRESETS[key].label:'Bố trí tùy chỉnh · '+fmtOne.format(m.row)+' × '+fmtOne.format(m.plant)+' m';
  const note=$('slopeNotice');note.classList.remove('warning');
- if(slopeValue>=15){note.classList.add('warning');note.textContent='Độ dốc '+slopeValue+'°: ngoài phạm vi độ dốc < 15° nêu trong quy trình tái canh WASI [01]. Không dùng mô phỏng này để quyết định cơ giới hóa.'}
- else if(slopeValue>=8){note.classList.add('warning');note.textContent='Độ dốc '+slopeValue+'°: cần kỹ sư khảo sát hướng hàng theo đồng mức, nguy cơ xói mòn và giới hạn an toàn của máy. Quy trình WASI [01] chỉ là một phần căn cứ.'}
+ if(slopeValue>=10){note.classList.add('warning');note.textContent='Độ dốc '+slopeValue+'°: nằm ngoài giới hạn dưới 10° theo quy trình WASI được công nhận năm 2021 [05]. Không dùng mô phỏng để quyết định cơ giới hóa.'}
+ else if(slopeValue>=8){note.classList.add('warning');note.textContent='Độ dốc '+slopeValue+'°: cần kỹ sư khảo sát hướng hàng theo đồng mức, nguy cơ xói mòn và giới hạn an toàn của máy. Quy trình WASI 2021 [05] còn yêu cầu diện tích >2 ha và những điều kiện tái canh khác.'}
  else{note.textContent='Độ dốc '+slopeValue+'°: vẫn cần khảo sát đất, hệ thống thoát nước, hướng hàng và thông số máy. Phần hình học không chứng minh khả năng cơ giới hóa.'}
  renderMap(m);return m;
 }
 for(const el of [area,row,plant,service,slope])el.addEventListener('input',update);
 document.querySelectorAll('[data-preset]').forEach(btn=>btn.addEventListener('click',()=>{
- const p=PRESETS[btn.dataset.preset];if(!p)return;row.value=p.row;plant.value=p.plant;update();$('phong-thi-nghiem').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+ const p=PRESETS[btn.dataset.preset];if(!p)return;row.value=p.row;plant.value=p.plant;update();row.dispatchEvent(new Event('input',{bubbles:true}));$('phong-thi-nghiem').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }));
-$('reset').addEventListener('click',()=>{area.value=2;row.value=3.2;plant.value=1.5;service.value=12;slope.value=5;update()});
+$('reset').addEventListener('click',()=>{area.value=2;row.value=3.2;plant.value=1.5;service.value=12;slope.value=5;update();row.dispatchEvent(new Event('input',{bubbles:true}))});
 $('export').addEventListener('click',()=>{
  const m=update();const rows=[
  ['Chỉ tiêu','Giá trị','Đơn vị','Ghi chú'],
  ['Diện tích tổng',m.area,'ha','Người dùng nhập'],['Khoảng cách hàng',m.row,'m','Người dùng nhập'],['Khoảng cách cây',m.plant,'m','Người dùng nhập'],
  ['Đất hạ tầng',m.service,'%','Giả định'],['Độ dốc',Number(slope.value),'độ','Cần khảo sát thực tế'],
  ['Mật độ lý thuyết',m.density.toFixed(2),'cây/ha','10000/(hàng×cây)'],['Diện tích trồng hữu hiệu',m.netArea.toFixed(3),'ha','Chưa tính địa hình'],
- ['Số cây ước tính',m.treeCount,'cây','Làm tròn xuống'],['Cơ sở tham chiếu','https://wasi.org.vn/wp-content/uploads/2021/11/QUYET-DINH-BAN-HANH-QUY-TRINH-TAI-CANH-CA-PHE-VOI-2020.pdf','','Không phải khuyến cáo đầu tư']
+ ['Số cây ước tính',m.treeCount,'cây','Làm tròn xuống'],['Cơ sở tham chiếu','https://wasi.org.vn/wp-content/uploads/2021/11/QUYET-DINH-CONG-NHAN-TBKT-QUY-TRINH-TAI-CANH-THEO-HUONG-CO-GIOI-HOA.pdf','','Quy trình WASI 2021: dốc <10°, diện tích >2 ha, các điều kiện khác; không phải khuyến cáo đầu tư']
  ];
  const csv='\ufeff'+rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\r\n');
  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='coffeerow-phuong-an-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
