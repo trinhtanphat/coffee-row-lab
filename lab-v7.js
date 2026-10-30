@@ -24,11 +24,11 @@ function render(){
  }
 }
 function setRecords(next){
- records=next.slice();trialSignature=signature();render();
+ records=next.slice();trialSignature=signature();render();window.dispatchEvent(new Event('coffeefield-fieldbook-change'));
  status('Đang dùng '+records.length+' phép đo cấp lô · '+summary.length+' nhóm ngày/biến/nghiệm thức. Số cây mẫu không tính là khối lặp độc lập.');
 }
 function clear(){
- records=[];trialSignature=signature();render();status('Nhật ký đã trống. Tải biểu mẫu V6 để nhập số liệu thực địa.');
+ records=[];trialSignature=signature();render();window.dispatchEvent(new Event('coffeefield-fieldbook-change'));status('Nhật ký đã trống. Tải biểu mẫu V6 để nhập số liệu thực địa.');
 }
 function download(name,content,type){
  const url=URL.createObjectURL(new Blob([content],{type}));
@@ -61,7 +61,7 @@ $('v7ExportSummary').addEventListener('click',()=>{
  download('coffeerow-measurements-summary.csv',R.csvEncode(headers,summary.map(r=>headers.map(k=>r[k]??''))),'text/csv;charset=utf-8');
 });
 window.addEventListener('coffeefield-data-change',()=>{
- const current=signature();if(current!==trialSignature){if(records.length)status('Phân lô đã thay đổi: nhật ký cũ đã được gỡ để tránh nhầm mã lô. Hãy tải bản lưu cũ nếu cần.');records=[];trialSignature=current;render()}
+ const current=signature();if(current!==trialSignature){if(records.length)status('Phân lô đã thay đổi: nhật ký cũ đã được gỡ để tránh nhầm mã lô. Hãy tải bản lưu cũ nếu cần.');records=[];trialSignature=current;render();window.dispatchEvent(new Event('coffeefield-fieldbook-change'))}
 });
 trialSignature=signature();render();
 })();
