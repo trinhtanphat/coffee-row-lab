@@ -138,3 +138,21 @@ Technical methods, assumptions and schemas: [V4 statistical reference](docs/rese
 - [Giới hạn và tiêu chí phát hành V5](docs/research-v5-quality-release.md)
 
 Website nghiên cứu hiện chỉ bảo đảm các tính năng phần mềm được kiểm thử; đánh giá thực địa, chất lượng số liệu và hiệu quả nông nghiệp cần dữ liệu thật và phản biện chuyên gia.
+
+## V6 — Bộ triển khai nghiên cứu thí điểm ngoài thực địa
+
+V6 adds a **Field Research Protocol** area while keeping V1–V5, working entirely in the browser. It is a planning/documentation feature, not a substitute for agronomic field validation.
+
+- Local site metadata: site label, region, cultivar/material, start year, and standardized measurement method. Do not enter personal secrets or private coordinates unnecessarily.
+- Eight explicit, unchecked-by-default, research-readiness checklist items covering soil/topography/water, control treatment, independent blocks/randomization, buffers, standard measurement units/calibration, management log, multi-year harvest and external expert review.
+- Export print-ready self-contained HTML protocol, a blank CSV field notebook for every plot (`plant_height`, `canopy_diameter`, `soil_moisture`; these are measurement labels and **not** actual results), and a metadata CSV containing checklist states.
+- A V4 JSON project now optionally contains `field_protocol` alongside trial design, terrain and harvest records. Existing V4/V5 JSON backups remain readable; invalid protocols are rejected **before** overwriting any existing session.
+- The completion indicator means only that metadata/checklist boxes were filled by the user. **It does not certify the trial, crop suitability, machinery safety, research data validity, or the correctness of answers.**
+
+For every plot, record plant-level subsample counts and plot means separately. The randomization unit is a **plot**, not an individual sampled coffee tree; never inflate the degrees of freedom by treating trees within a plot as independent experimental replicates. Data measurement units must be specified consistently across treatment groups.
+
+References:
+- University of Minnesota Extension, *How to do research on your farm* — https://extension.umn.edu/courses-and-events/for-professionals/on-farm-research/how-to-do-research-on-your-farm
+- World Coffee Research, *International Multilocation Variety Trial* — https://worldcoffeeresearch.org/es/download/711b2ac6-bfd0-4a63-b08b-cfc7556f9611
+
+Tests: `node --test tests/*.test.cjs`, `node --check field-protocol.js`, `node --check lab-v6.js`. Test and deploy on WIN11-181 without GitHub Actions and without modifying the production tunnel.

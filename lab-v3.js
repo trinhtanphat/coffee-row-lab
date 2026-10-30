@@ -145,6 +145,7 @@ function exportProject(){
   trial:{treatments:[...state.trial.treatments],blocks:state.trial.blocks,
    plotWidthM:state.trial.plotWidthM,plotLengthM:state.trial.plotLengthM,seed:state.trial.seed},
   terrain_csv:state.terrainCsv,terrain_synthetic:state.terrainSynthetic,
+  field_protocol:window.CoffeeFieldV6?.snapshot?.()??null,
   observations_csv:observationsCsv(),observations_synthetic:state.isSynthetic,
   disclaimer:'Locally exported research session. Synthetic examples are not field data.'};
 }
@@ -155,6 +156,8 @@ function restoreProject(data){
  if(t.treatments.some(x=>typeof x!=='string'||!x.trim()||x.length>70)||String(t.seed??'').length>50)throw Error('Tên nghiệm thức hoặc seed không hợp lệ');
  const normalizedTreatments=R.treatmentsFromText(t.treatments.join('\n'));
  const trial=R.trialDesign({...t,treatments:normalizedTreatments});
+ const protocol=data.field_protocol==null?null:window.CoffeeProtocol?.normalize(data.field_protocol);
+ if(data.field_protocol!=null&&!protocol)throw Error('Module nhập quy trình thí điểm không khả dụng');
  let terrain=null,obs=[];
  if(data.terrain_csv!==null&&data.terrain_csv!==undefined){
   if(typeof data.terrain_csv!=='string')throw Error('Lưới địa hình JSON không hợp lệ');
@@ -172,6 +175,7 @@ function restoreProject(data){
  else resetObservations();
  if(terrain)importTerrain(data.terrain_csv,!!data.terrain_synthetic);
  else resetTerrain();
+ window.CoffeeFieldV6?.restore?.(protocol??{});
  message('v3TrialMessage','Đã khôi phục thiết kế '+trial.plots.length+' lô từ bản lưu JSON đã được kiểm tra.');
  return {plots:trial.plots.length,observations:obs.length,terrain:!!terrain};
 }
