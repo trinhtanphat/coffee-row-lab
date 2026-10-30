@@ -156,3 +156,17 @@ References:
 - World Coffee Research, *International Multilocation Variety Trial* — https://worldcoffeeresearch.org/es/download/711b2ac6-bfd0-4a63-b08b-cfc7556f9611
 
 Tests: `node --test tests/*.test.cjs`, `node --check field-protocol.js`, `node --check lab-v6.js`. Test and deploy on WIN11-181 without GitHub Actions and without modifying the production tunnel.
+
+## V7 — Nhập nhật ký đo đạc và thống kê cấp lô (30/10/2026)
+
+V6 đã xuất biểu mẫu đo đạc theo từng lô. V7 hoàn thiện vòng nhập liệu **CSV → kiểm tra → tổng hợp → sao lưu → khôi phục** trên chính trình duyệt, không có backend hoặc cơ chế tự upload dữ liệu.
+
+1. Ở mục V6, tải **Nhật ký đo đạc CSV** và điền `visit_date` (YYYY-MM-DD), `sampled_trees` (số cây mẫu nguyên dương), `plot_mean` (trung bình đã tính của các cây trong một lô). Các ô còn trống được bỏ qua, dòng đang điền dở bị từ chối.
+2. Ở mục V7, nhập lại CSV. Mỗi dòng được kiểm tra mã lô, khối, nghiệm thức, năm, ngày, biến đo và đơn vị; trùng tổ hợp mã lô/ngày/biến không được chấp nhận. Biến hiện hỗ trợ: `plant_height (cm)`, `canopy_diameter (cm)`, `soil_moisture (pct)`.
+3. Bảng mô tả hiển thị theo **ngày × biến đo × nghiệm thức**, trung bình của các trung bình lô, số lô được đo/khối dự kiến và khoảng min–max. **Số cây đo là mẫu phụ, không phải số lần lặp độc lập**; không tính F/p-value từ các số đo lặp qua ngày.
+4. Xuất dữ liệu đã được xác thực và bảng tóm tắt CSV; hoặc lưu JSON dự án với trường tùy chọn `fieldbook_csv`. Các bản JSON cũ (V4–V6) vẫn đọc được. Kiểm tra cả nhật ký trước khi khôi phục, không thay thế dữ liệu hiện hành nếu phát hiện tệp lỗi.
+5. Khi thiết kế phân lô thay đổi, website yêu cầu xác nhận nếu đang có dữ liệu thu hoạch/nhật ký; thay đổi đã đồng ý sẽ xóa các quan sát gắn với mã lô cũ. Nên sao lưu JSON trước.
+
+**Giới hạn:** các phạm vi số học dùng để bắt lỗi nhập liệu, không phải chuẩn giống hoặc ngưỡng sinh học. Giá trị `soil_moisture` mang đơn vị phần trăm do người dùng khai báo, không có quy trình hiệu chuẩn tự động. Báo cáo chỉ mang tính thống kê mô tả. Không thay thế kiểm định thiết kế thí nghiệm đo lặp, khảo sát thực địa, thiết bị đo, hay phản biện nông học.
+
+Chạy QA: `node --test tests/*.test.cjs`, `node --check fieldbook-engine.js`, `node --check lab-v7.js` và Chrome headless trên WIN11-181. Không dùng GitHub Actions hoặc can thiệp production tunnel.
