@@ -115,18 +115,22 @@ function download(name,content,type){
  setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
 function note(text){$('v4ProjectStatus').textContent=text}
-$('v4Save').addEventListener('click',()=>{
- try{const json=JSON.stringify(V.snapshotProject(),null,2);download('coffeerow-research-project-v4.json',json,'application/json');note('Đã tạo bản lưu JSON để tải về (không upload lên máy chủ).');}
- catch(e){note('Không thể xuất dự án: '+e.message)}
+$('v4Save').addEventListener('click',async()=>{
+ try{
+  const pack=await window.CoffeeBackup.packageProject(V.snapshotProject(),window.crypto);
+  download('coffeerow-research-project-v9-verified.json',JSON.stringify(pack,null,2),'application/json');
+  note('Đã xuất JSON có mã SHA-256: '+pack.checksum.slice(0,16)+'… (không gửi dữ liệu ra máy chủ).');
+ }catch(e){note('Không thể xuất dự án: '+e.message)}
 });
 $('v4RestoreFile').addEventListener('change',async event=>{
  const f=event.target.files?.[0];if(!f)return;
  try{
   if(f.size>3200000)throw Error('Tệp lớn hơn 3,2 MB');
   const data=JSON.parse(await f.text());
-  if(V.observations.length&&!window.confirm('Khôi phục sẽ thay thế dữ liệu nghiên cứu đang mở. Tiếp tục?'))return;
-  const result=V.restoreProject(data);
-  note('Đã khôi phục bản lưu: '+result.plots+' lô, '+result.observations+' bản ghi, địa hình: '+(result.terrain?'có':'không')+'.');
+  const checked=await window.CoffeeBackup.verifyBackup(data,window.crypto);
+  if((V.observations.length||(window.CoffeeFieldV7?.records?.length??0)>0)&&!window.confirm('Khôi phục sẽ thay thế dữ liệu nghiên cứu đang mở. Tiếp tục?'))return;
+  const result=V.restoreProject(checked.project);
+  note('Đã khôi phục bản lưu: '+result.plots+' lô, '+result.observations+' bản ghi, địa hình: '+(result.terrain?'có':'không')+'. '+(checked.verified?'SHA-256 hợp lệ: '+checked.checksum.slice(0,16)+'…':'Định dạng cũ chưa có kiểm tra SHA-256.'));
  }catch(e){note('Lỗi khôi phục: '+e.message)}
  finally{event.target.value=''}
 });

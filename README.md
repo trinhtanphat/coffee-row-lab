@@ -187,3 +187,21 @@ Workflow: create RCBD design (V3), plan sampling (V6), import harvest CSV (V3) a
 Test using `node --test tests/*.test.cjs`, `node --check research-dossier.js`, `node --check lab-v8.js`; validate independent Chrome desktop/mobile and then the live GitHub Pages URL for the exact merged commit. No GitHub Actions used.
 
 **Research scope disclaimer:** These are software deliverables and simple descriptive/statistical calculations under explicit design assumptions. Any final agronomic recommendation, Brazil–Vietnam productivity comparison or claim of economic/field suitability requires independent source data, site conditions, specialist review and field validation. The integrated report never claims that requirement is complete.
+
+## V9 — SHA-256 verified project backups (30/10/2026)
+
+The V4–V8 project backup could validate data structure but did not detect arbitrary post-export edits. V9 changes the **Sao lưu JSON** button to output a self-contained verified JSON envelope:
+
+```json
+{"format":"coffeerow-verified-backup","version":1,"algorithm":"SHA-256","checksum":"<64 lowercase hex characters>","project":{"format":"coffeerow-research-project","version":4,"...":"..."}}
+```
+
+The checksum is calculated over a deterministically serialized version of `project` with lexicographically sorted JSON keys and UTF-8 encoded values. Browser native Web Crypto `SubtleCrypto.digest('SHA-256')` is required for newly verified backups; an unsupported/insecure browser fails safely with a message. It is not a server-side service and never uploads data. The wrapper is limited to 3.2 MB (UTF-8 bytes); pathological JSON structures are rejected.
+
+On import:
+- Verified envelope: checksum is recalculated first; mismatch or invalid digest causes rejection **before** any project data is replaced.
+- Legacy `format=coffeerow-research-project, version=4` files exported by V4–V8 still restore, with an explicit warning that no cryptographic integrity verification was possible.
+- Existing validation of plot design, harvest entries, fieldbook entries, terrain and protocol remains in effect. Restore prompts before overwriting entered harvest or fieldbook observations.
+- The checksum only detects changes relative to the checksum stored in that **same** file. **It is not a digital signature or third-party authentication**: someone who changes both the file contents and checksum can produce a new valid envelope. It also does not establish accuracy, provenance or scientific validity of agronomic measurements.
+
+Run `node --test tests/*.test.cjs` (including `tests/verified-backup.test.cjs`) and independent Chrome desktop/mobile smoke. The V9 browser QA specifically alters a synthetic measurement provenance flag in a backed-up project, verifies the restoration is refused and current state is unchanged, then restores a valid backup. No GitHub Actions or production tunnel changes.
