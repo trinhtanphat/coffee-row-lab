@@ -170,3 +170,20 @@ V6 đã xuất biểu mẫu đo đạc theo từng lô. V7 hoàn thiện vòng n
 **Giới hạn:** các phạm vi số học dùng để bắt lỗi nhập liệu, không phải chuẩn giống hoặc ngưỡng sinh học. Giá trị `soil_moisture` mang đơn vị phần trăm do người dùng khai báo, không có quy trình hiệu chuẩn tự động. Báo cáo chỉ mang tính thống kê mô tả. Không thay thế kiểm định thiết kế thí nghiệm đo lặp, khảo sát thực địa, thiết bị đo, hay phản biện nông học.
 
 Chạy QA: `node --test tests/*.test.cjs`, `node --check fieldbook-engine.js`, `node --check lab-v7.js` và Chrome headless trên WIN11-181. Không dùng GitHub Actions hoặc can thiệp production tunnel.
+
+## V8.0.0 — Hồ sơ nghiên cứu tích hợp (30/10/2026)
+
+V8 closes the in-browser reporting workflow between V3 harvest observations and V7 plot-level field measurement notebooks. It does **not** introduce hidden telemetry, server persistence or cloud APIs. All files are downloaded only when the user clicks Export.
+
+- **Integrated HTML dossier**: includes V5 harvest quality audit and eligible annual RCBD, V7 fieldbook descriptive summaries by date/treatment/variable, year-matched coverage counts, optional V6 site/protocol metadata, and explicit software/scientific limitations.
+- **Coverage CSV**: year, total plots, plot IDs represented in harvest data, plot IDs in field measurements, IDs present in both sets and a harvest-synthetic flag.
+- **Data integrity**: rejects unknown plots, wrong plot treatment/block metadata, duplicate entries, invalid measurement units/limits, dates and sampled-tree counts before report creation; uses HTML escaping for all user-supplied values.
+- **No artificial correlation**: same-year overlap does not assert measurements happened the same day; multiple sampled trees within a plot and repeated visit dates are not independent experiment replicates.
+- **Live refresh**: report dashboard updates when harvest, trial design or fieldbook state changes. V7 now emits a fieldbook update event without modifying active browser sessions.
+- Older V4–V7 project JSON remains compatible; existing `fieldbook_csv` is read from the current V7 module. The old V5 report remains available separately.
+
+Workflow: create RCBD design (V3), plan sampling (V6), import harvest CSV (V3) and field measurements CSV (V7), review quality (V5), then export V8 integrated HTML or CSV from **Hồ sơ đối chiếu V8**. HTML opens offline and can be printed to PDF from the browser.
+
+Test using `node --test tests/*.test.cjs`, `node --check research-dossier.js`, `node --check lab-v8.js`; validate independent Chrome desktop/mobile and then the live GitHub Pages URL for the exact merged commit. No GitHub Actions used.
+
+**Research scope disclaimer:** These are software deliverables and simple descriptive/statistical calculations under explicit design assumptions. Any final agronomic recommendation, Brazil–Vietnam productivity comparison or claim of economic/field suitability requires independent source data, site conditions, specialist review and field validation. The integrated report never claims that requirement is complete.
