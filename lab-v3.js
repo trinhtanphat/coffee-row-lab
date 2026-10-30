@@ -106,6 +106,8 @@ function generateTrial(){
  try{
   const next=readTrial();
   const changed=!state.trial||JSON.stringify(next.plots)!==JSON.stringify(state.trial.plots);
+  const hasMeasurements=state.observations.length>0||(window.CoffeeFieldV7?.records?.length??0)>0;
+  if(changed&&state.trial&&hasMeasurements&&!window.confirm('Tạo lại phân lô sẽ xóa số liệu thu hoạch và nhật ký đo đạc đang mở. Hãy sao lưu dự án JSON trước. Tiếp tục?'))return;
   state.trial=next;renderTrial(next);
   if(changed)resetObservations();
   message('v3TrialMessage','Đã tạo '+next.plots.length+' lô; '+next.treatments.length+' nghiệm thức xuất hiện đúng 1 lần trong mỗi khối. Seed: '+next.seed+'.');
@@ -146,6 +148,7 @@ function exportProject(){
    plotWidthM:state.trial.plotWidthM,plotLengthM:state.trial.plotLengthM,seed:state.trial.seed},
   terrain_csv:state.terrainCsv,terrain_synthetic:state.terrainSynthetic,
   field_protocol:window.CoffeeFieldV6?.snapshot?.()??null,
+  fieldbook_csv:window.CoffeeFieldV7?.snapshotCsv?.()??null,
   observations_csv:observationsCsv(),observations_synthetic:state.isSynthetic,
   disclaimer:'Locally exported research session. Synthetic examples are not field data.'};
 }
@@ -158,6 +161,11 @@ function restoreProject(data){
  const trial=R.trialDesign({...t,treatments:normalizedTreatments});
  const protocol=data.field_protocol==null?null:window.CoffeeProtocol?.normalize(data.field_protocol);
  if(data.field_protocol!=null&&!protocol)throw Error('Module nhập quy trình thí điểm không khả dụng');
+ let fieldbook=[];
+ if(data.fieldbook_csv!==null&&data.fieldbook_csv!==undefined){
+  if(typeof data.fieldbook_csv!=='string'||!window.CoffeeFieldV7?.validateCsv)throw Error('Module nhập nhật ký chưa sẵn sàng');
+  fieldbook=window.CoffeeFieldV7.validateCsv(data.fieldbook_csv,trial);
+ }
  let terrain=null,obs=[];
  if(data.terrain_csv!==null&&data.terrain_csv!==undefined){
   if(typeof data.terrain_csv!=='string')throw Error('Lưới địa hình JSON không hợp lệ');
@@ -176,6 +184,7 @@ function restoreProject(data){
  if(terrain)importTerrain(data.terrain_csv,!!data.terrain_synthetic);
  else resetTerrain();
  window.CoffeeFieldV6?.restore?.(protocol??{});
+ window.CoffeeFieldV7?.restoreValidated?.(fieldbook);
  message('v3TrialMessage','Đã khôi phục thiết kế '+trial.plots.length+' lô từ bản lưu JSON đã được kiểm tra.');
  return {plots:trial.plots.length,observations:obs.length,terrain:!!terrain};
 }
